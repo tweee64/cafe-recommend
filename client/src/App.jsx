@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import FilterData from "./pages/FilterData";
 import CafeDetail from "./pages/CafeDetail";
+import AddCafe from "./pages/AddCafe";
 function App() {
   return (
     <>
@@ -12,6 +13,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="/add-cafe" element={<AddCafe />}></Route>
           <Route path="/filter-data" element={<FilterData />}></Route>
           <Route path="/item/:id" element={<CafeDetail />}></Route>
         </Routes>

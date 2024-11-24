@@ -15,8 +15,10 @@ const cafeSlice = createSlice({
     },
     setSearchTerm(state, action) {
       state.searchTerm = action.payload;
-      state.filteredData = state.cafes.filter((cafe) =>
-        cafe.name.toLowerCase().includes(state.searchTerm.toLowerCase())
+      state.filteredData = state.cafes.filter(
+        (cafe) =>
+          cafe.name.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
+          cafe.region.toLowerCase() === state.searchTerm.toLowerCase()
       );
     },
   },

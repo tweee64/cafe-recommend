@@ -4,7 +4,6 @@ import CafeCard from "../components/CafeCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setCafes } from "../redux/cafeSlice";
 const Home = () => {
-  //   const [items, setItems] = useState([]);
   const dispatch = useDispatch();
   const cafes = useSelector((state) => state.cafes.cafes);
   useEffect(() => {
@@ -13,7 +12,6 @@ const Home = () => {
       const data = await res.json();
       console.log("items", data);
       dispatch(setCafes(data.items));
-      //   setItems(data.items);
     };
     fetchData();
   }, [dispatch]);
@@ -26,7 +24,7 @@ const Home = () => {
             <CafeCard item={i} key={i.id} />
           ))} */}
           {Array.isArray(cafes) && cafes.length > 0 ? (
-            cafes.map((cafe) => <CafeCard item={cafe} key={cafe.id} />)
+            cafes.map((cafe) => <CafeCard item={cafe} key={cafe._id} />)
           ) : (
             <p>No cafes found.</p>
           )}
