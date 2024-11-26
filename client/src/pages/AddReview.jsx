@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function AddReview({ cafeId, cafeName }) {
+function AddReview({ cafeId, cafeName, onReviewAdded }) {
   //   const [cafeId, setCafeId] = useState();
   const [reviewerName, setReviewerName] = useState();
   const [review, setReview] = useState();
@@ -55,6 +55,9 @@ function AddReview({ cafeId, cafeName }) {
       .post("http://localhost:3000/add-review", data)
       .then((result) => {
         console.log(result);
+        if (result.status === 201) {
+          onReviewAdded();
+        }
       })
       .catch((err) => console.log(err));
   };

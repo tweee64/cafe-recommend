@@ -150,7 +150,6 @@ const Navbar = () => {
               onBlur={() => setTimeout(() => setDropdownOpen(false), 200)} // Close dropdown after input loses focus
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              onEn
             />
             <FaSearch className="absolute top-3 right-3 text-red-500"></FaSearch>
             {isDropdownOpen && flattenedList.length > 0 && (

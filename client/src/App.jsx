@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import FilterData from "./pages/FilterData";
 import CafeDetail from "./pages/CafeDetail";
 import AddCafe from "./pages/AddCafe";
+import AddReviewConfirm from "./pages/AddReviewConfirm";
 function App() {
   return (
     <>

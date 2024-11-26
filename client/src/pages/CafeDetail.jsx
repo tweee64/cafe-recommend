@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import AddReview from "./AddReview";
 import Modal from "../components/Modal";
 import axios from "axios";
+import AddReviewConfirm from "./AddReviewConfirm";
 
 const CafeDetail = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const CafeDetail = () => {
   const [reviewList, setReviewList] = useState([]);
   const [averageRating, setAverageRating] = useState();
   const [uniqueComments, setUniqueComments] = useState([]);
+  const [isReviewAdded, setIsReviewAdded] = useState(false);
+
   const openInGoogleMaps = (address) => {
     if (!address) {
       console.error("Address is required to open in Google Maps.");
@@ -26,10 +29,10 @@ const CafeDetail = () => {
     const totalStars = 5;
     let stars = [];
     for (let i = 0; i < Math.floor(rating); i++) {
-      stars.push(<span class="text-yellow-500 text-sm">&#9733;</span>);
+      stars.push(<span className="text-yellow-500 text-sm">&#9733;</span>);
     }
     for (let i = 0; i < totalStars - Math.floor(rating); i++) {
-      stars.push(<span class="text-gray-400 text-sm">&#9733;</span>);
+      stars.push(<span className="text-gray-400 text-sm">&#9733;</span>);
     }
     return stars;
   };
@@ -136,34 +139,34 @@ const CafeDetail = () => {
         </div>
       </div>
       <div>
-        <div class="reviews-section bg-white mt-6 p-4 px-60 rounded-lg border-t  mx-auto">
-          <div class=" flex justify-between items-center mb-4 ">
-            <h3 class="text-lg font-semibold text-gray-800">Reviews</h3>
+        <div className="reviews-section bg-white mt-6 p-4 px-60 rounded-lg border-t  mx-auto">
+          <div className=" flex justify-between items-center mb-4 ">
+            <h3 className="text-lg font-semibold text-gray-800">Reviews</h3>
             <a
               href="#"
-              class="text-yellow-500 text-sm font-medium hover:underline"
+              className="text-yellow-500 text-sm font-medium hover:underline"
             >
               View all ({reviewList.length})
             </a>
           </div>
 
           {reviewList.length > 0 ? (
-            reviewList.map((review) => (
-              <div key={review._id} className="flex items-start">
+            reviewList.map((review, index) => (
+              <div key={index} className="flex items-start">
                 <img
                   src="https://via.placeholder.com/50"
                   alt="Reviewer"
-                  class="w-12 h-12 rounded-full mr-4"
+                  className="w-12 h-12 rounded-full mr-4"
                 />
                 <div>
-                  <h4 class="text-sm font-semibold text-gray-800">
+                  <h4 className="text-sm font-semibold text-gray-800">
                     {review.reviewerName}
                   </h4>
                   {/* <p class="text-xs text-gray-500">
                     51 Reviews, 125k Followers
                   </p> */}
                   <div className="mb-2">{renderStars(review.rating)}</div>
-                  <p class="text-sm text-gray-600 mt-2">{review.review}</p>
+                  <p className="text-sm text-gray-600 mt-2">{review.review}</p>
                 </div>
               </div>
             ))
@@ -173,7 +176,21 @@ const CafeDetail = () => {
         </div>
       </div>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-        <AddReview cafeId={cafe._id} cafeName={cafe.name}></AddReview>
+        {!isReviewAdded ? (
+          <AddReview
+            cafeId={cafe._id}
+            cafeName={cafe.name}
+            onReviewAdded={() => setIsReviewAdded(true)} // Callback to update review status
+          ></AddReview>
+        ) : (
+          <AddReviewConfirm
+            onConfirm={() => {
+              setIsModalOpen(false); // Close modal after confirmation
+              setIsReviewAdded(false);
+              window.location.reload(); // Reload the current page
+            }}
+          />
+        )}
       </Modal>
     </div>
   );
