@@ -7,12 +7,7 @@ const connectDB = async () => {
     if (!mongoURI) {
       throw new Error("MongoDB URI is undefined");
     }
-    const conn = await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      // useFindAndModify: false, // Disable deprecated findAndModify
-      // useCreateIndex: true, // Ensure the use of the new index creation
-    });
+    const conn = await mongoose.connect(mongoURI);
     console.log(`MongoDB connected ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
