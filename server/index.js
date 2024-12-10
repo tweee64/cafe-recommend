@@ -1,4 +1,6 @@
 const express = require("express");
+const PORT = process.env.PORT || 5000; // Use the dynamic port from Heroku, or fallback to 5000 locally
+
 const connectDB = require("./db.js");
 const itemModel = require("./models/items.js");
 const userModel = require("./models/User.js");
@@ -81,6 +83,6 @@ app.post("/login", (req, res) => {
     }
   });
 });
-app.listen(process.env.PORT || 3000, () => {
+app.listen(PORT, () => {
   console.log("app is running");
 });
