@@ -84,6 +84,6 @@ app.post("/login", (req, res) => {
     }
   });
 });
-app.listen(PORT, () => {
+app.listen(port, () => {
   console.log("app is running");
 });
