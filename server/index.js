@@ -1,5 +1,6 @@
+require("dotenv").config(); // Load environment variables from .env file
 const express = require("express");
-const PORT = process.env.PORT || 5000; // Use the dynamic port from Heroku, or fallback to 5000 locally
+const PORT = process.env.PORT || 3000; // Use the dynamic port from Heroku, or fallback to 5000 locally
 
 const connectDB = require("./db.js");
 const itemModel = require("./models/items.js");
