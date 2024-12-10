@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function AddReview({ cafeId, cafeName, onReviewAdded }) {
+function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
   //   const [cafeId, setCafeId] = useState();
   const [reviewerName, setReviewerName] = useState();
   const [review, setReview] = useState();
@@ -9,7 +9,6 @@ function AddReview({ cafeId, cafeName, onReviewAdded }) {
   const [hover, setHover] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [error, setError] = useState("");
-
   const options = [
     { value: "ambience", label: "Ambience" },
     { value: "food", label: "Good Food" },
@@ -33,6 +32,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded }) {
       setRating(star);
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!rating) {
@@ -77,7 +77,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded }) {
               type="text"
               id="name"
               placeholder="Enter cafe name"
-              value={reviewerName}
+              value={user.username}
               onChange={(e) => setReviewerName(e.target.value)}
               className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
@@ -93,10 +93,12 @@ function AddReview({ cafeId, cafeName, onReviewAdded }) {
               value={review}
               onChange={(e) => setReview(e.target.value)}
               rows="4"
-              className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="mt-2 p-3 border bo rder-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
+          <input type="file" required />
+
           <label htmlFor="dropdown" className="block mb-2 font-medium">
             What did you like about this cafe:
           </label>
@@ -141,9 +143,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded }) {
                 key={star}
                 type="button"
                 className={`text-2xl ${
-                  star <= (hover || rating)
-                    ? "text-yellow-500"
-                    : "text-gray-300"
+                  star <= (hover || rating) ? "star full" : "star"
                 }`}
                 onClick={() => handleRatingClick(star)} // Handle toggle logic
                 onMouseEnter={() => setHover(star)}
@@ -158,7 +158,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded }) {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="bg-color-button text-white px-6 py-3 rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               Add Review
             </button>

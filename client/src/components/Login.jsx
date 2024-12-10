@@ -13,9 +13,11 @@ function Login({ openSignUp, setIsModalOpen }) {
       .post("http://localhost:3000/login", { email, password })
       .then((result) => {
         console.log(result);
-        if (result.data === "Success") {
+        if (result.data.message === "Success") {
           console.log("success");
-          navigate("/home");
+          console.log("user", result.data.user);
+          localStorage.setItem("user", JSON.stringify(result.data.user)); // Store user in localStorage
+          window.location.reload(); // Reload the page
           setIsModalOpen(false);
         } else {
           setEror(result.data);
@@ -62,7 +64,10 @@ function Login({ openSignUp, setIsModalOpen }) {
           </a>
         </div>
         <div className="mb-4">
-          <button type="submit" className="w-full bg-red-600 text-white py-2">
+          <button
+            type="submit"
+            className="w-full text-white py-2 px-4 rounded-lg bg-color-button hover:bg-red-500"
+          >
             {" "}
             Login
           </button>

@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-color-button {
+  background-color: #ff6c64;
+}
+.text-font-main {
+  color: #ff6c64;
+}
+.star {
+  color: #ddd; /* Default color for empty stars */
+}
+
+.star.full {
+  color: gold; /* Full stars in gold */
+}
+
+.star.half {
+  background: linear-gradient(90deg, gold 50%, #ddd 50%);
+  -webkit-background-clip: text;
+  color: transparent;
+}

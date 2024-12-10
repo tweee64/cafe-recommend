@@ -8,10 +8,14 @@ import { useSelector } from "react-redux";
 import Register from "./Register";
 import Login from "./Login";
 import Modal from "./Modal";
+import avatar from "../assets/avatar.jpeg";
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setisLogin] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
+
   const openSignUp = () => {
     setisLogin(false);
     setIsModalOpen(true);
@@ -21,6 +25,7 @@ const Navbar = () => {
     setisLogin(true);
     setIsModalOpen(true);
   };
+
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -104,6 +109,28 @@ const Navbar = () => {
     fetchData();
   }, [dispatch]);
 
+  useEffect(() => {
+    const loggedUser = localStorage.getItem("user");
+    if (loggedUser) {
+      try {
+        const user = JSON.parse(loggedUser);
+        setUser(user); // Set the user data in state
+      } catch (error) {
+        console.log("Error parsing user data from localStorage:", error);
+      }
+    }
+    setLoading(false); // Once the check is done, set loading to false
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      setUser(null); // Clear user from state
+      localStorage.removeItem("user"); // Clear user from localStorage
+    } catch (err) {
+      console.log("Error logging out", err);
+    }
+  };
+
   let filteredCafes = search
     ? cafes.filter(
         (item) =>
@@ -168,9 +195,9 @@ const Navbar = () => {
                     ) : (
                       <div>
                         {item.name}
-                        <div className="text-sm text-gray-500">
+                        {/* <div className="text-sm text-gray-500">
                           {item.region}
-                        </div>
+                        </div> */}
                       </div>
                     )}
                   </li>
@@ -180,18 +207,31 @@ const Navbar = () => {
           </form>
         </div>
         <div className="flex items-center space-x-4">
-          <Link to="/cart">
-            <FaShoppingCart className="text-lg" />
-          </Link>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="hidden md:block"
-          >
-            Login | Register
-          </button>
-          <button className="block md:hidden">
-            <FaUser />
-          </button>
+          {user ? (
+            <div className="inline-flex space-x-2 items-center">
+              <h2>
+                Welcome <p className="font-bold">{user.username}</p>
+              </h2>
+              <img
+                src={avatar} // If no photo, use default
+                alt="User Profile"
+                style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+              />
+              <button
+                className="font-bold text-font-main"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="hidden md:block"
+            >
+              Login | Register
+            </button>
+          )}
         </div>
       </div>
       <div className="flex items-center justify-center space-x-10 py-4 text-sm font-bold">

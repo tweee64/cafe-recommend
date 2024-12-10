@@ -8,7 +8,9 @@ const Home = () => {
   const cafes = useSelector((state) => state.cafes.cafes);
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:3000");
+      const res = await fetch(
+        "https://cafe-recommend-server-75034ba58793.herokuapp.com/"
+      );
       const data = await res.json();
       console.log("items", data);
       dispatch(setCafes(data.items));

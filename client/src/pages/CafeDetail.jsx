@@ -5,6 +5,9 @@ import AddReview from "./AddReview";
 import Modal from "../components/Modal";
 import axios from "axios";
 import AddReviewConfirm from "./AddReviewConfirm";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import avatar from "../assets/avatar.jpeg";
 
 const CafeDetail = () => {
   const { id } = useParams();
@@ -15,6 +18,22 @@ const CafeDetail = () => {
   const [averageRating, setAverageRating] = useState();
   const [uniqueComments, setUniqueComments] = useState([]);
   const [isReviewAdded, setIsReviewAdded] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState();
+  const [isLogin, setisLogin] = useState(true);
+  const [isModalLoginOpen, setIsModalLoginOpen] = useState(false);
+  useEffect(() => {
+    const loggedUser = localStorage.getItem("user");
+    if (loggedUser) {
+      try {
+        const user = JSON.parse(loggedUser);
+        setUser(user); // Set the user data in state
+      } catch (error) {
+        console.log("Error parsing user data from localStorage:", error);
+      }
+    }
+    setLoading(false); // Once the check is done, set loading to false
+  }, []);
 
   const openInGoogleMaps = (address) => {
     if (!address) {
@@ -29,13 +48,41 @@ const CafeDetail = () => {
     const totalStars = 5;
     let stars = [];
     for (let i = 0; i < Math.floor(rating); i++) {
-      stars.push(<span className="text-yellow-500 text-sm">&#9733;</span>);
+      stars.push(<span className="star full text-sm">&#9733;</span>);
     }
     for (let i = 0; i < totalStars - Math.floor(rating); i++) {
-      stars.push(<span className="text-gray-400 text-sm">&#9733;</span>);
+      stars.push(<span className="star text-sm">&#9733;</span>);
     }
     return stars;
   };
+  const openLoginModal = () => {
+    setIsModalLoginOpen(true);
+  };
+
+  const openSignUp = () => {
+    setisLogin(false);
+    setIsModalOpen(true);
+  };
+
+  const openLogin = () => {
+    setisLogin(true);
+    setIsModalOpen(true);
+  };
+  const roundedRating = Math.round(averageRating * 2) / 2;
+  console.log(roundedRating);
+  const averageStar = Array.from({ length: 5 }, (_, index) => {
+    const starIndex = index + 1;
+    if (starIndex <= roundedRating) {
+      return "full";
+    } else if (
+      starIndex === Math.ceil(roundedRating) &&
+      roundedRating % 1 !== 0
+    ) {
+      return "half";
+    } else {
+      return "empty";
+    }
+  });
   useEffect(() => {
     const newCafe = cafes.find((cafe) => cafe._id === id);
     setCafe(newCafe);
@@ -55,7 +102,6 @@ const CafeDetail = () => {
         const allItems = [];
         for (let item of reviews) {
           for (let i = 0; i < item.selectedOptions.length; i++) {
-            // if (!uniqueCommentSets.includes(item.selectedOptions[i])) {
             allItems.push(item.selectedOptions[i]);
             // }
           }
@@ -74,7 +120,6 @@ const CafeDetail = () => {
 
         setUniqueComments(topThree);
 
-        // setUniqueComments(uniqueCommentSets);
         console.log("unique", uniqueComments);
         // Calculate and set the average rating
         const averageRating = (totalRatings / reviews.length).toFixed(1);
@@ -83,7 +128,7 @@ const CafeDetail = () => {
       .catch((error) => console.error("Error fetching data", error)); // Always good to handle errors
   }, []); // Empty dependency array means this effect runs only once when the component mounts
   if (!cafe) {
-    return <div>Loading..</div>; // Or you can show a loading state
+    return <div>Loading..</div>;
   }
 
   return (
@@ -92,36 +137,43 @@ const CafeDetail = () => {
         <div className="md:w-1/2  md:px-8 h-96 flex justify-center shadow-md ">
           <img src={cafe.image} alt={cafe.image} className="" />
         </div>
-        <div className="md:-1/2 md:px-8 md:py-4 flex flex-col items-center gap-y-1 shadow-md">
+        <div className="md:w-1/2 md:px-8 md:py-4 flex flex-col items-center gap-y-1 shadow-md">
           {" "}
-          <h2 className="text-2xl font-bold">{cafe.name}</h2>
-          <p className="text-gray-500">{cafe.address}</p>
-          <p className="text-gray-500 font-semibold">
-            From 10:00 AM to 11:00 PM
-          </p>
+          <h1 className="text-2xl font-bold">{cafe.name}</h1>
+          <div className="inline-flex space-x-2">
+            <p className="font-bold text-gray-600 text-lg">{averageRating}</p>
+            <div className="inline-flex">
+              {averageStar.map((star, index) => (
+                <span key={index} className={`star ${star}`}>
+                  &#9733;
+                </span>
+              ))}
+            </div>
+          </div>
+          <p className="text-gray-700">{cafe.address}</p>
           <p className="text-gray-500">{cafe.description}</p>
           {uniqueComments.length > 0 ? (
-            <ul className="list-disc pl-6 flex flex-row">
+            <div className="list-disc pl-6 flex flex-row">
               {uniqueComments.map(({ key, value }, index) => (
-                <li
+                <div
                   key={index}
-                  className="bg-blue-300 rounded-xl py-1 px-2 mx-2 text-white"
+                  className="border rounded-xl py-1 px-2 mx-2 text-font-main"
                 >
-                  {key}
-                </li>
+                  #{key}
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
             <p className="text-gray-500">No hashtag available.</p>
           )}
           <div className="flex justify-center mt-4 space-x-2">
             <button
               onClick={() => openInGoogleMaps(cafe.address)}
-              className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600"
+              className="bg-color-button text-white py-2 px-4 rounded-lg hover:bg-red-500"
             >
               View on maps
             </button>
-            <button className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600">
+            <button className="bg-color-button text-white py-2 px-4 rounded-lg hover:bg-red-500">
               +44 1903 815757
             </button>
           </div>
@@ -131,7 +183,7 @@ const CafeDetail = () => {
             </p>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="text-yellow-500 text-sm mt-2"
+              className="text-font-main text-sm mt-2"
             >
               Write a review
             </button>
@@ -144,7 +196,7 @@ const CafeDetail = () => {
             <h3 className="text-lg font-semibold text-gray-800">Reviews</h3>
             <a
               href="#"
-              className="text-yellow-500 text-sm font-medium hover:underline"
+              className="text-font-main text-sm font-medium hover:underline"
             >
               View all ({reviewList.length})
             </a>
@@ -152,9 +204,9 @@ const CafeDetail = () => {
 
           {reviewList.length > 0 ? (
             reviewList.map((review, index) => (
-              <div key={index} className="flex items-start">
+              <div key={index} className="flex items-start ">
                 <img
-                  src="https://via.placeholder.com/50"
+                  src={avatar}
                   alt="Reviewer"
                   className="w-12 h-12 rounded-full mr-4"
                 />
@@ -165,8 +217,8 @@ const CafeDetail = () => {
                   {/* <p class="text-xs text-gray-500">
                     51 Reviews, 125k Followers
                   </p> */}
-                  <div className="mb-2">{renderStars(review.rating)}</div>
-                  <p className="text-sm text-gray-600 mt-2">{review.review}</p>
+                  <div className="mb-1">{renderStars(review.rating)}</div>
+                  <p className="text-sm text-gray-600 mb-1">{review.review}</p>
                 </div>
               </div>
             ))
@@ -176,13 +228,19 @@ const CafeDetail = () => {
         </div>
       </div>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-        {!isReviewAdded ? (
+        {!isReviewAdded && user ? (
           <AddReview
+            user={user}
             cafeId={cafe._id}
             cafeName={cafe.name}
             onReviewAdded={() => setIsReviewAdded(true)} // Callback to update review status
           ></AddReview>
-        ) : (
+        ) : !user ? (
+          <div>
+            Please <button onClick={openLoginModal}>Log in</button> first before
+            writing review
+          </div>
+        ) : isReviewAdded ? (
           <AddReviewConfirm
             onConfirm={() => {
               setIsModalOpen(false); // Close modal after confirmation
@@ -190,7 +248,19 @@ const CafeDetail = () => {
               window.location.reload(); // Reload the current page
             }}
           />
+        ) : (
+          <div>unknown</div>
         )}
+      </Modal>
+      <Modal
+        isModalOpen={isModalLoginOpen}
+        setIsModalOpen={setIsModalLoginOpen}
+      >
+        {isLogin ? (
+          <Login openSignUp={openSignUp} setIsModalOpen={setIsModalOpen} />
+        ) : (
+          <Register openLogin={openLogin} />
+        )}{" "}
       </Modal>
     </div>
   );

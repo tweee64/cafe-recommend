@@ -64,7 +64,15 @@ app.post("/login", (req, res) => {
   userModel.findOne({ email: email }).then((user) => {
     if (user) {
       if (user.password === password) {
-        res.json("Success");
+        res.json({
+          message: "Success",
+          user: {
+            id: user._id,
+            username: user.name,
+            email: user.email,
+            photo: user.photo, // Use default avatar if no photo exists
+          },
+        });
       } else {
         res.json("The password is incorrect");
       }
