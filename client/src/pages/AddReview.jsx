@@ -3,7 +3,7 @@ import axios from "axios";
 
 function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
   //   const [cafeId, setCafeId] = useState();
-  const [reviewerName, setReviewerName] = useState();
+  // const [reviewerName, setReviewerName]  = useState();
   const [review, setReview] = useState();
   const [rating, setRating] = useState();
   const [hover, setHover] = useState(0);
@@ -45,7 +45,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
 
     const data = {
       cafeId,
-      reviewerName,
+      reviewerName: user.username,
       review,
       rating,
       selectedOptions,
@@ -78,7 +78,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
               id="name"
               placeholder="Enter cafe name"
               value={user.username}
-              onChange={(e) => setReviewerName(e.target.value)}
+              // onChange={(e) => setReviewerName(user.username)}
               className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
@@ -97,7 +97,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
               required
             />
           </div>
-          <input type="file" required />
+          {/* <input type="file" required /> */}
 
           <label htmlFor="dropdown" className="block mb-2 font-medium">
             What did you like about this cafe:
