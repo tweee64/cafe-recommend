@@ -101,7 +101,10 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:3000");
+      const apiUrl = `${process.env.REACT_APP_API_URL}`;
+
+      // const res = await fetch("http://localhost:3000");
+      const res = await fetch(apiUrl);
       const data = await res.json();
       console.log("items", data);
       dispatch(setCafes(data.items));

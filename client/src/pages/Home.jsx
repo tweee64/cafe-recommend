@@ -7,8 +7,9 @@ const Home = () => {
   const dispatch = useDispatch();
   const cafes = useSelector((state) => state.cafes.cafes);
   useEffect(() => {
+    const apiUrl = `${process.env.REACT_APP_API_URL}`;
     const fetchData = async () => {
-      const res = await fetch("http://localhost:3000");
+      const res = await fetch(apiUrl);
       const data = await res.json();
       console.log("items", data);
       dispatch(setCafes(data.items));
