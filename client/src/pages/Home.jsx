@@ -7,7 +7,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const cafes = useSelector((state) => state.cafes.cafes);
   useEffect(() => {
-    const apiUrl = `${process.env.REACT_APP_API_URL}`;
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
     const fetchData = async () => {
       const res = await fetch(apiUrl);
       const data = await res.json();

@@ -11,14 +11,16 @@ function AddCafe() {
   const [image, setImageUrl] = useState();
   //   const dispatch = useDispatch();
   useEffect(() => {
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
     axios
-      .get("http://localhost:3000/postalCode")
+      .get(`${apiUrl}postalCode`)
       .then((result) => setRegionMap(result.data.postalcode))
       .catch((error) => console.error("Error fetching data", error)); // Always good to handle errors
   }, []); // Empty dependency array means this effect runs only once when the component mounts
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
     const fullAddress = address + ", Singapore " + postalCode;
     console.log(fullAddress);
     const data = {
@@ -30,7 +32,7 @@ function AddCafe() {
     };
     console.log(data);
     axios
-      .post("http://localhost:3000/add-cafe", data)
+      .post(`${apiUrl}add-cafe`, data)
       .then((result) => {
         console.log(result);
       })

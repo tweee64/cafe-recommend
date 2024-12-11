@@ -89,8 +89,9 @@ const CafeDetail = () => {
   }, [id, cafes]);
 
   useEffect(() => {
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
     axios
-      .get(`http://localhost:3000/get-reviews/${id}`)
+      .get(`${apiUrl}get-reviews/${id}`)
       .then((result) => {
         console.log("result", result);
         const reviews = result.data.reviews;

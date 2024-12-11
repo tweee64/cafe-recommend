@@ -101,7 +101,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiUrl = `${process.env.REACT_APP_API_URL}`;
+      const apiUrl = `${import.meta.env.VITE_API_URL}`;
 
       // const res = await fetch("http://localhost:3000");
       const res = await fetch(apiUrl);

@@ -9,8 +9,10 @@ function Login({ openSignUp, setIsModalOpen }) {
   const [error, setEror] = useState();
   const handleSubmit = (e) => {
     e.preventDefault();
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
+
     axios
-      .post("http://localhost:3000/login", { email, password })
+      .post(`${apiUrl}login`, { email, password })
       .then((result) => {
         console.log(result);
         if (result.data.message === "Success") {

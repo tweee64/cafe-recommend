@@ -8,8 +8,10 @@ function Register({ openLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
+
     axios
-      .post("http://localhost:3000/register", { name, email, password })
+      .post(`${apiUrl}register`, { name, email, password })
       .then((result) => {
         console.log(result);
         openLogin();

@@ -42,7 +42,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
 
     // Clear error and proceed with form submission
     setError("");
-
+    const apiUrl = `${import.meta.env.VITE_API_URL}`;
     const data = {
       cafeId,
       reviewerName: user.username,
@@ -52,7 +52,7 @@ function AddReview({ cafeId, cafeName, onReviewAdded, user }) {
     };
     console.log(data);
     axios
-      .post("http://localhost:3000/add-review", data)
+      .post(`${apiUrl}add-review`, data)
       .then((result) => {
         console.log(result);
         if (result.status === 201) {
