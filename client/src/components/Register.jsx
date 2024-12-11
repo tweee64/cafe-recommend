@@ -5,11 +5,21 @@ function Register({ openLogin }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState();
 
+  const validateEmail = (email) => {
+    // Regular expression for basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      setSuccess(false);
+      return;
+    }
     const apiUrl = `${import.meta.env.VITE_API_URL}`;
-
     axios
       .post(`${apiUrl}register`, { name, email, password })
       .then((result) => {
@@ -43,6 +53,7 @@ function Register({ openLogin }) {
             placeholder="Enter Email"
             onChange={(e) => setEmail(e.target.value)}
           />
+          <span className="text-red-800">{error}</span>
         </div>
 
         <div className="mb-4">

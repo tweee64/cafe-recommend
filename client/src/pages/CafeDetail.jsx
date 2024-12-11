@@ -142,7 +142,9 @@ const CafeDetail = () => {
           {" "}
           <h1 className="text-2xl font-bold">{cafe.name}</h1>
           <div className="inline-flex space-x-2">
-            <p className="font-bold text-gray-600 text-lg">{averageRating}</p>
+            <p className="font-bold text-gray-600 text-lg">
+              {isNaN(averageRating) ? "0.0" : averageRating}
+            </p>
             <div className="inline-flex">
               {averageStar.map((star, index) => (
                 <span key={index} className={`star ${star}`}>
@@ -238,8 +240,14 @@ const CafeDetail = () => {
           ></AddReview>
         ) : !user ? (
           <div>
-            Please <button onClick={openLoginModal}>Log in</button> first before
-            writing review
+            Please{" "}
+            <button
+              className="font-bold text-font-main"
+              onClick={openLoginModal}
+            >
+              Log In
+            </button>{" "}
+            first before writing review
           </div>
         ) : isReviewAdded ? (
           <AddReviewConfirm

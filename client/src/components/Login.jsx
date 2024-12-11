@@ -5,8 +5,8 @@ import axios from "axios";
 function Login({ openSignUp, setIsModalOpen }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const navigate = useNavigate();
-  const [error, setEror] = useState();
+  const [error, setError] = useState();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const apiUrl = `${import.meta.env.VITE_API_URL}`;
@@ -22,7 +22,7 @@ function Login({ openSignUp, setIsModalOpen }) {
           window.location.reload(); // Reload the page
           setIsModalOpen(false);
         } else {
-          setEror(result.data);
+          setError(result.data);
         }
       })
       .catch((err) => console.log(err));
